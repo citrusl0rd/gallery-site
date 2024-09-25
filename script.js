@@ -3,24 +3,26 @@ let currentImageIndex = 0;
 const imagesPerLoad = 3;
 let loadedImages = 0;
 
-// Function to fetch image files from the /gallery/ directory
+// GitHub repository information
+const owner = 'citrusl0rd';
+const repo = 'gallery-site';
+const path = 'gallery';
+
+// Function to fetch image files from the GitHub repository
 async function fetchImageFiles() {
     try {
-        const response = await fetch('/gallery/');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(text, 'text/html');
-        const links = htmlDoc.getElementsByTagName('a');
-        
-        for (let link of links) {
-            const href = link.getAttribute('href');
-            if (href.match(/\.(jpe?g|png|gif)$/i)) {
-                images.push({
-                    src: `/gallery/${href}`,
-                    alt: `Event photo ${images.length + 1}`
-                });
-            }
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch gallery contents');
         }
+        const data = await response.json();
+        
+        images = data
+            .filter(file => file.type === 'file' && file.name.match(/\.(jpe?g|png|gif)$/i))
+            .map((file, index) => ({
+                src: file.download_url,
+                alt: `Event photo ${index + 1}`
+            }));
     } catch (error) {
         console.error('Error fetching image files:', error);
         document.getElementById('gallery').innerHTML = '<p>Error loading images. Please try again later.</p>';
