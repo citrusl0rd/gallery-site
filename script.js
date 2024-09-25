@@ -1,12 +1,10 @@
 // This is a placeholder for the actual image data
 // In a real scenario, you would fetch this data from your GitHub repository
 const images = [
-    { id: 1, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+1", alt: "Event photo 1" },
-    { id: 2, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+2", alt: "Event photo 2" },
-    { id: 3, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+3", alt: "Event photo 3" },
-    { id: 4, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+4", alt: "Event photo 4" },
-    { id: 5, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+5", alt: "Event photo 5" },
-    { id: 6, src: "https://via.placeholder.com/400x300.png?text=Event+Photo+6", alt: "Event photo 6" },
+    { id: 1, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458412339_1685317278884135_1890090686872783401_n.jpg?raw=true", alt: "Event photo 1" },
+    { id: 2, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458478593_821670136795786_1104896778363302997_n.jpg?raw=true", alt: "Event photo 2" },
+    { id: 3, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458600920_2544097822457563_2778178490323036121_n.jpg?raw=true", alt: "Event photo 3" },
+    { id: 4, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/pixel.png?raw=true", alt: "Event photo 4" },
 ];
 
 let currentImageIndex = 0;
