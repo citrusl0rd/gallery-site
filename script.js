@@ -3,10 +3,10 @@ let currentImageIndex = 0;
 const imagesPerLoad = 3;
 let loadedImages = 0;
 
-// Function to fetch image files from the gallery/ directory
+// Function to fetch image files from the /gallery/ directory
 async function fetchImageFiles() {
     try {
-        const response = await fetch('gallery/');
+        const response = await fetch('/gallery/');
         const text = await response.text();
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(text, 'text/html');
