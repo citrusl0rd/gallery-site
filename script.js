@@ -1,15 +1,31 @@
-// This is a placeholder for the actual image data
-// In a real scenario, you would fetch this data from your GitHub repository
-const images = [
-    { id: 1, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458412339_1685317278884135_1890090686872783401_n.jpg?raw=true", alt: "Event photo 1" },
-    { id: 2, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458478593_821670136795786_1104896778363302997_n.jpg?raw=true", alt: "Event photo 2" },
-    { id: 3, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/458600920_2544097822457563_2778178490323036121_n.jpg?raw=true", alt: "Event photo 3" },
-    { id: 4, src: "https://github.com/citrusl0rd/gallery-site/blob/main/gallery/pixel.png?raw=true", alt: "Event photo 4" },
-];
-
+let images = [];
 let currentImageIndex = 0;
 const imagesPerLoad = 3;
 let loadedImages = 0;
+
+// Function to fetch image files from the /gallery/ directory
+async function fetchImageFiles() {
+    try {
+        const response = await fetch('/gallery/');
+        const text = await response.text();
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(text, 'text/html');
+        const links = htmlDoc.getElementsByTagName('a');
+        
+        for (let link of links) {
+            const href = link.getAttribute('href');
+            if (href.match(/\.(jpe?g|png|gif)$/i)) {
+                images.push({
+                    src: `/gallery/${href}`,
+                    alt: `Event photo ${images.length + 1}`
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching image files:', error);
+        document.getElementById('gallery').innerHTML = '<p>Error loading images. Please try again later.</p>';
+    }
+}
 
 function loadImages() {
     const gallery = document.getElementById('gallery');
@@ -59,10 +75,17 @@ function changeImage(n) {
     caption.innerHTML = images[currentImageIndex].alt;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadImages();
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchImageFiles();
+    
+    if (images.length > 0) {
+        loadImages();
+        document.getElementById('loadMoreBtn').addEventListener('click', loadImages);
+    } else {
+        document.getElementById('gallery').innerHTML = '<p>No images found in the gallery.</p>';
+        document.getElementById('loadMoreBtn').style.display = 'none';
+    }
 
-    document.getElementById('loadMoreBtn').addEventListener('click', loadImages);
     document.querySelector('.close').addEventListener('click', closeLightbox);
 });
 
